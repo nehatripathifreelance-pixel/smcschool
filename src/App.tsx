@@ -867,7 +867,7 @@ const SidebarItem = ({
 );
 
 const Card = ({ children, className = "", ...props }: { children: React.ReactNode, className?: string, [key: string]: any }) => (
-  <div className={`glass-panel rounded-2xl p-8 ${className}`} {...props}>
+  <div className={`glass-panel rounded-2xl p-4 sm:p-6 md:p-8 ${className}`} {...props}>
     {children}
   </div>
 );
@@ -927,7 +927,7 @@ const Dashboard = ({
       {(isSuperAdmin || isAdmin) && (
         <>
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
             <Card className="p-6 bg-gradient-to-br from-primary to-primary/80 text-white border-none shadow-xl shadow-primary/20">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-3 bg-white/20 rounded-xl">
@@ -12390,6 +12390,7 @@ export default function App() {
         fixed inset-y-0 left-0 z-[100] lg:relative lg:z-0
         ${isSidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full lg:w-24 lg:translate-x-0'} 
         bg-white border-r border-slate-200 flex flex-col transition-all duration-300 ease-in-out overflow-hidden
+        shadow-2xl lg:shadow-none
       `}>
         <div className="p-6 flex items-center gap-3 border-b border-slate-50 relative">
           <div className="shrink-0">
@@ -12418,7 +12419,7 @@ export default function App() {
           </button>
         </div>
 
-        <nav ref={sidebarNavRef} className="flex-1 px-4 space-y-2 overflow-y-scroll custom-scrollbar pb-10 relative min-h-0">
+        <nav ref={sidebarNavRef} className="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar pb-10 relative min-h-0">
           <SidebarItem 
             icon={LayoutDashboard} 
             label={isSidebarOpen ? "Dashboard" : ""} 
@@ -12646,22 +12647,24 @@ export default function App() {
 
         <div className="p-4 border-t border-slate-100 flex flex-col gap-3">
           {/* Scroll Buttons - Fixed at the bottom of the sidebar */}
-          <div className="flex items-center justify-center gap-4 mb-2">
-            <button 
-              onClick={(e) => { e.stopPropagation(); scrollSidebar('up'); }} 
-              className="p-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-all shadow-lg active:scale-95"
-              title="Scroll Up"
-            >
-              <ChevronUp size={20} />
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); scrollSidebar('down'); }} 
-              className="p-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-all shadow-lg active:scale-95"
-              title="Scroll Down"
-            >
-              <ChevronDown size={20} />
-            </button>
-          </div>
+          {isSidebarOpen && (
+            <div className="flex items-center justify-center gap-4 mb-2">
+              <button 
+                onClick={(e) => { e.stopPropagation(); scrollSidebar('up'); }} 
+                className="p-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-all shadow-lg active:scale-95"
+                title="Scroll Up"
+              >
+                <ChevronUp size={20} />
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); scrollSidebar('down'); }} 
+                className="p-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-all shadow-lg active:scale-95"
+                title="Scroll Down"
+              >
+                <ChevronDown size={20} />
+              </button>
+            </div>
+          )}
 
           <button 
             onClick={() => setView('login')}
@@ -12679,7 +12682,7 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-0 w-full pb-20 lg:pb-0">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 shrink-0">
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 shrink-0 sticky top-0 z-50">
           <div className="flex items-center gap-2 md:gap-4">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -12695,12 +12698,12 @@ export default function App() {
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="relative hidden lg:block">
+            <div className="relative hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text" 
-                placeholder="Search students, records..." 
-                className="bg-slate-100 border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 w-64"
+                placeholder="Search..." 
+                className="bg-slate-100 border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 w-40 lg:w-64 transition-all"
               />
             </div>
           </div>
@@ -12764,7 +12767,7 @@ export default function App() {
         </header>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-scroll p-4 md:p-8 custom-scrollbar min-h-0">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 custom-scrollbar min-h-0">
           <AnimatePresence mode="wait">
             {view === 'profile-settings' && (
               <motion.div key="profile-settings" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
@@ -12776,7 +12779,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <Card className="p-8">
+                  <Card className="p-4 sm:p-6 md:p-8">
                     <div className="flex flex-col items-center mb-10">
                       <div className="relative group">
                         <img 
@@ -13458,13 +13461,13 @@ export default function App() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
               >
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                   <div>
-                    <h1 className="text-3xl font-bold">Student Directory</h1>
-                    <p className="text-text-secondary">Manage and view all enrolled students.</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold">Student Directory</h1>
+                    <p className="text-text-secondary text-sm sm:text-base">Manage and view all enrolled students.</p>
                   </div>
-                  <div className="flex gap-3">
-                    <button className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all flex items-center gap-2">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 w-full sm:w-auto">
+                    <button className="flex-1 sm:flex-none px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
                       <FileText size={18} />
                       Export PDF
                     </button>
@@ -13477,7 +13480,7 @@ export default function App() {
                         });
                         setView('register-student');
                       }} 
-                      className="btn-primary flex items-center gap-2"
+                      className="flex-1 sm:flex-none btn-primary flex items-center justify-center gap-2"
                     >
                       <UserPlus size={20} />
                       Add New
@@ -13566,7 +13569,7 @@ export default function App() {
                             const matchesType = !studentFilterType || s.studentType === studentFilterType;
                             return matchesSearch && matchesClass && matchesSection && matchesType;
                           }).map((s) => (
-                            <tr key={s.id} className="text-sm hover:bg-slate-50/50 transition-all">
+                            <tr key={s.id} className="text-[11px] sm:text-sm hover:bg-slate-50/50 transition-all">
                               <td className="py-4 font-mono text-xs text-primary font-bold">{s.studentId}</td>
                               <td className="py-4 font-bold text-slate-600">{s.rollNumber || '-'}</td>
                               <td className="py-4">
